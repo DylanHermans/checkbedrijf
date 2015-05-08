@@ -1,20 +1,29 @@
 package com.example.dylan_hermans.checkbedrijf;
 
 import android.app.Activity;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.view.View.OnClickListener;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+
+import java.io.IOException;
 
 public class MainActivity extends Activity {
     Button BtnZoeken = null;
     EditText TxtZoekWaarden = null;
     TextView TxtResultaten;
+    String url= "http://www.checkbedrijf.be/test/zoek.php?zoek=joske";
 
 
     @Override
@@ -31,11 +40,32 @@ public class MainActivity extends Activity {
         BtnZoeken=(Button)findViewById(R.id.ButZoeken);
         BtnZoeken.setOnClickListener(new OnClickListener() {
                                       public void onClick(View vw) {
-
-                                          TxtResultaten.setText(TxtZoekWaarden.getText());
+                                          makeGetRequest();
+                                         //TxtResultaten.setText(TxtZoekWaarden.getText());
                                       }
                                   });
 
+    }
+    private void makeGetRequest() {
+
+        HttpClient client = new DefaultHttpClient();
+        url = url+TxtZoekWaarden.getText();
+        HttpGet request = new HttpGet(url);
+        // replace with your url
+
+        HttpResponse response;
+        try {
+            response = client.execute(request);
+
+            Log.d("Response of GET request", response.toString());
+            TxtResultaten.setText(response.toString());
+        } catch (ClientProtocolException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
 
     }
 
