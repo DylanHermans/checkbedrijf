@@ -4,5 +4,6 @@
     <string name="app_name">checkbedrijf</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="bedrijf_name_placeholder"></string>
 
 </resources>

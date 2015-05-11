@@ -1,6 +1,7 @@
 package com.example.dylan_hermans.checkbedrijf;
 
 import android.app.Activity;
+import android.app.ListActivity;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -16,17 +17,11 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
-
 import java.io.BufferedReader;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends Activity {
+public class MainActivity extends ListActivity {
     Button BtnZoeken = null;
     EditText TxtZoekWaarden = null;
     TextView TxtResultaten;
@@ -38,7 +33,7 @@ public class MainActivity extends Activity {
     String data = null;
     ProgressBar Pb;
     List<MyTask> tasks;
-
+    List<Bedrijf> bedrijflijst;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,9 +51,6 @@ public class MainActivity extends Activity {
     public void addListenerOnButton() {
 
         TxtZoekWaarden =(EditText)findViewById(R.id.TxtZoekWaarde);
-        TxtResultaten =(TextView)findViewById(R.id.TxtZoekResultaten);
-        TxtResultaten.setMovementMethod(new ScrollingMovementMethod());
-        TxtResultaten.setText("");
         BtnZoeken=(Button)findViewById(R.id.ButZoeken);
         BtnZoeken.setOnClickListener(new OnClickListener() {
                                       public void onClick(View vw) {
@@ -68,8 +60,6 @@ public class MainActivity extends Activity {
                                               Toast.makeText(MainActivity.this, "netwerk niet berijkbaar", Toast.LENGTH_LONG).show();
                                           }
 
-
-                                           //makeGetRequest();
                                           //TxtResultaten.setText(TxtZoekWaarden.getText());
                                       }
                                   });
@@ -79,32 +69,9 @@ public class MainActivity extends Activity {
     private void requestData() {
         uri = url+TxtZoekWaarden.getText();
         MyTask task = new MyTask();
-        task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, uri);
+        task.execute(uri);
     }
 
-    private void makeGetRequest() {
-        uri = url+TxtZoekWaarden.getText();
-        StringRequest request = new StringRequest(url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        Bedrijven = null;
-                        Bedrijven = url + response;
-                        TxtResultaten.setText("");
-                        TxtResultaten.setText(Bedrijven);
-                        response = null;
-
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError err) {
-                        Toast.makeText(MainActivity.this,err.getMessage(),Toast.LENGTH_LONG).show();
-                    }
-                });
-        RequestQueue queue = Volley.newRequestQueue(this);
-        queue.add(request);
-    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -131,7 +98,6 @@ public class MainActivity extends Activity {
     private class MyTask extends AsyncTask<String,String,String>{
         @Override
         protected void onPreExecute() {
-            TxtResultaten.append("start de http request \n");
             if (tasks.size()==0){
                 Pb.setVisibility(View.VISIBLE);
             }
@@ -141,32 +107,36 @@ public class MainActivity extends Activity {
         @Override
         protected String doInBackground(String... params) {
 
-            for (int i = 0; i< params.length; i++){
-                publishProgress("werken met " + params[i]);
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
+           Bedrijven = HTTPbedrijven.getData(params[0]);
 
-            return "afgesloten de http request";
+            return Bedrijven;
         }
 
         @Override
         protected void onPostExecute(String s) {
-            super.onPostExecute(s);
-            TxtResultaten.append(s + "\n");
-        }
 
-        @Override
-        protected void onProgressUpdate(String... values) {
-            TxtResultaten.append(values[0]+"\n");
             tasks.remove(this);
             if (tasks.size()==0){
                 Pb.setVisibility(View.INVISIBLE);
             }
+            if (s == null){
+                Toast.makeText(MainActivity.this,"geen data gevonden", Toast.LENGTH_LONG).show();
+            }
 
+            bedrijflijst = bedrijfparser.parseFeed(s);
+            if (bedrijflijst != null){
+                BedrijfAdapter adapter = new BedrijfAdapter(MainActivity.this, R.layout.item_bedrijf,bedrijflijst);
+                setListAdapter(adapter);
+            }else {
+                Toast.makeText(MainActivity.this,"het gaan niet om een zoek functie maar een enkel bedrijf", Toast.LENGTH_LONG).show();
+            }
+
+
+
+        }
+
+        @Override
+        protected void onProgressUpdate(String... values) {
         }
     }
 
