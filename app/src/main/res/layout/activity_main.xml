@@ -49,8 +49,8 @@
     <ListView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="New Text"
-        android:id="@android:id/list"
+
+        android:id="@+id/list"
         android:background="#ffffffff"
         android:layout_marginTop="5dp"
         android:backgroundTint="#ffffffff"
@@ -60,7 +60,8 @@
         android:layout_toStartOf="@+id/ButZoeken"
         android:scrollbars="vertical"
         android:layout_alignRight="@+id/ButZoeken"
-        android:layout_alignEnd="@+id/ButZoeken" />
+        android:layout_alignEnd="@+id/ButZoeken"
+        android:layout_alignParentEnd="true" />
 
     <ProgressBar
         android:layout_width="wrap_content"

@@ -1,18 +1,18 @@
 package com.example.dylan_hermans.checkbedrijf;
 
 import android.app.Activity;
-import android.app.ListActivity;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.text.method.ScrollingMovementMethod;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,13 +21,15 @@ import java.io.BufferedReader;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends ListActivity {
+public class MainActivity extends Activity {
     Button BtnZoeken = null;
     EditText TxtZoekWaarden = null;
     TextView TxtResultaten;
     static String url= "http://www.checkbedrijf.be/test/zoek.php?zoek=";
     String uri= null;
     String Bedrijven = null;
+    ListView viewbedrijven = null;
+
 
     BufferedReader in = null;
     String data = null;
@@ -126,7 +128,33 @@ public class MainActivity extends ListActivity {
             bedrijflijst = bedrijfparser.parseFeed(s);
             if (bedrijflijst != null){
                 BedrijfAdapter adapter = new BedrijfAdapter(MainActivity.this, R.layout.item_bedrijf,bedrijflijst);
-                setListAdapter(adapter);
+                viewbedrijven = (ListView) findViewById(R.id.list);
+                viewbedrijven.setAdapter(adapter);
+
+                viewbedrijven.setOnItemClickListener(new  AdapterView.OnItemClickListener(){
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View viewclicked, int position, long id) {
+
+                                // String textClick=(String)parent.getItemAtPosition(position);
+                                // String textklick = viewclicked.toString();
+                                // TxtZoekWaarden.setText(textClick);
+                                String requestname = bedrijflijst.get(position).getNaambedrijf().toString();
+                                int requestpost = bedrijflijst.get(position).getPostcode();
+                                String requestnnb = bedrijflijst.get(position).getNbblink().toString();
+                                TxtZoekWaarden.setText(requestname + " (" + requestpost + ")");
+                            }
+                        }
+                );
+
+
+
+
+
+
+
+
+
+
             }else {
                 Toast.makeText(MainActivity.this,"het gaan niet om een zoek functie maar een enkel bedrijf", Toast.LENGTH_LONG).show();
             }
