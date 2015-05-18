@@ -2,10 +2,12 @@ package com.example.dylan_hermans.checkbedrijf;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -29,13 +31,10 @@ public class MainActivity extends Activity {
     String uri= null;
     String Bedrijven = null;
     ListView viewbedrijven = null;
-
-
-    BufferedReader in = null;
-    String data = null;
     ProgressBar Pb;
     List<MyTask> tasks;
     List<Bedrijf> bedrijflijst;
+    String ZOEKWAARDEN = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +56,7 @@ public class MainActivity extends Activity {
         BtnZoeken.setOnClickListener(new OnClickListener() {
                                       public void onClick(View vw) {
                                           if (isOnline()) {
+                                              ZOEKWAARDEN = TxtZoekWaarden.getText().toString();
                                               requestData();
                                           }else {
                                               Toast.makeText(MainActivity.this, "netwerk niet berijkbaar", Toast.LENGTH_LONG).show();
@@ -69,7 +69,7 @@ public class MainActivity extends Activity {
     }
 
     private void requestData() {
-        uri = url+TxtZoekWaarden.getText();
+        uri = url+ZOEKWAARDEN;
         MyTask task = new MyTask();
         task.execute(uri);
     }
@@ -138,10 +138,28 @@ public class MainActivity extends Activity {
                                 // String textClick=(String)parent.getItemAtPosition(position);
                                 // String textklick = viewclicked.toString();
                                 // TxtZoekWaarden.setText(textClick);
-                                String requestname = bedrijflijst.get(position).getNaambedrijf().toString();
-                                int requestpost = bedrijflijst.get(position).getPostcode();
-                                String requestnnb = bedrijflijst.get(position).getNbblink().toString();
-                                TxtZoekWaarden.setText(requestname + " (" + requestpost + ")");
+                                //String requestname = bedrijflijst.get(position).getNaambedrijf().toString();
+                                //int requestpost = bedrijflijst.get(position).getPostcode();
+                                //String requestnnb = bedrijflijst.get(position).getNbblink().toString();
+                                //TxtZoekWaarden.setText(requestname + " (" + requestpost + ")");
+                                //if (isOnline()) {
+                                //    requestData2(requestnnb);
+                                //}else {
+                                //    Toast.makeText(MainActivity.this, "netwerk niet berijkbaar", Toast.LENGTH_LONG).show();
+                                //}
+
+                                Intent getDataScreenIntent = new Intent(getBaseContext(), SecondScreen.class);
+
+                                final int result = 1;
+
+                                String tijdelijkelink = bedrijflijst.get(position).getNbblink().toString();
+
+                                getDataScreenIntent.putExtra("BedrijfsDataActivity",tijdelijkelink);
+
+                                startActivityForResult(getDataScreenIntent,result);
+
+
+
                             }
                         }
                 );
@@ -168,5 +186,16 @@ public class MainActivity extends Activity {
         }
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        ZOEKWAARDEN = data.getStringExtra("FunctieZoekString");
+        TxtZoekWaarden.setText(ZOEKWAARDEN);
+        if (isOnline()) {
+            requestData();
+        }else {
+            Toast.makeText(MainActivity.this, "netwerk niet berijkbaar", Toast.LENGTH_LONG).show();
+        }
 
+    }
 }
