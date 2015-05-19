@@ -7,6 +7,7 @@
     android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".MainActivity"
     android:background="@drawable/default_wallpaper">
 
+
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -56,8 +57,18 @@
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true" />
 
+    <ScrollView
+        android:layout_below="@+id/TxtZoekWaarde2"
+        android:layout_marginTop="9dp"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="vertical">
+
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text=""
         android:id="@+id/TxtDataView2"
@@ -67,11 +78,21 @@
         android:layout_below="@+id/TxtZoekWaarde2"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:scrollbars = "vertical"
         android:layout_alignRight="@+id/ButZoeken2"
         android:layout_alignEnd="@+id/ButZoeken2"/>
-        //android:autoLink="web"
-        //android:linksClickable="true"
 
 
+    <WebView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/webView"
+        android:layout_below="@+id/TxtDataView2"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="23dp"
+        android:layout_alignRight="@+id/TxtDataView2"
+        android:layout_alignEnd="@+id/TxtDataView2"
+        />
+        </LinearLayout>
+</ScrollView>
 </RelativeLayout>

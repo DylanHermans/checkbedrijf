@@ -25,7 +25,6 @@
         android:layout_toStartOf="@+id/ButZoeken"
         android:layout_alignBottom="@+id/ButZoeken"
         android:singleLine="true"
-        android:text="hallo"
         android:cursorVisible="true" />
 
     <ImageView
