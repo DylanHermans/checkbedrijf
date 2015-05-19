@@ -12,7 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/TxtZoekWaarde2"
-        android:hint="bedrijf, naam of BTW nummer"
+        android:hint="zoek bedrijf of naam"
         android:backgroundTint="#fffffdfb"
         android:autoText="false"
         android:background="#fffbfffb"
