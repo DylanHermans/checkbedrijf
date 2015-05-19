@@ -25,7 +25,8 @@
         android:layout_toStartOf="@+id/ButZoeken"
         android:layout_alignBottom="@+id/ButZoeken"
         android:singleLine="true"
-        android:text="hallo" />
+        android:text="hallo"
+        android:cursorVisible="true" />
 
     <ImageView
         android:layout_width="wrap_content"
@@ -49,11 +50,9 @@
     <ListView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
         android:id="@+id/list"
-        android:background="#ffffffff"
         android:layout_marginTop="5dp"
-        android:backgroundTint="#ffffffff"
+        android:background="#AFFF"
         android:layout_below="@+id/TxtZoekWaarde"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"

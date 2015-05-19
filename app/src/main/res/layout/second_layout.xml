@@ -22,10 +22,11 @@
         android:lines="1"
         android:longClickable="true"
         android:maxLines="1"
-        android:layout_toLeftOf="@+id/ButZoeken"
-        android:layout_toStartOf="@+id/ButZoeken"
-        android:layout_alignBottom="@+id/ButZoeken"
-        android:singleLine="true" />
+        android:layout_toStartOf="@+id/ButZoeken2"
+        android:singleLine="true"
+        android:layout_alignBottom="@+id/ButZoeken2"
+        android:layout_toLeftOf="@+id/ButZoeken2"
+        android:cursorVisible="true" />
 
     <ImageView
         android:layout_width="wrap_content"
@@ -43,8 +44,8 @@
         android:text="zoeken"
         android:id="@+id/ButZoeken2"
         android:layout_below="@+id/imageView2"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignRight="@+id/imageView2"
+        android:layout_alignEnd="@+id/imageView2" />
 
 
 
@@ -58,19 +59,19 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="blaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        android:text=""
         android:id="@+id/TxtDataView2"
+        android:textColor="#ff000000"
+        android:background="#AFFF"
+        android:layout_marginTop="9dp"
         android:layout_below="@+id/TxtZoekWaarde2"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:textColor="#ff000000" />
+        android:scrollbars = "vertical"
+        android:layout_alignRight="@+id/ButZoeken2"
+        android:layout_alignEnd="@+id/ButZoeken2"/>
+        //android:autoLink="web"
+        //android:linksClickable="true"
 
-    <WebView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/webView"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
 
 </RelativeLayout>
